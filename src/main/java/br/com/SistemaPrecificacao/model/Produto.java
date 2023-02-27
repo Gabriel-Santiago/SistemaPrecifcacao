@@ -23,7 +23,11 @@ public class Produto {
 	
 	private String nome;
 	private double preco;
+	
+	private Double imposto;
+	private Double taxaCartao;
 	private Double lucro;
+	private boolean usaCartao;
 	
 	@ManyToOne
 	@JoinColumn(name="produtoUsuario")
@@ -54,9 +58,14 @@ public class Produto {
 				.mapToDouble(x -> x.getPreco())
 				.sum();
 
-		double preco = soma * ((lucro / 100) + 1);
-
-		return preco;
+		double preco = soma * ((lucro / 100) + 1) + imposto;
+		
+		if(!usaCartao == true) {
+			double novoPreco = preco * ((taxaCartao / 100) + 1);
+			return novoPreco;
+		}else {
+			return preco;
+		}
 	}
 
 	public void setPreco(double preco) {
@@ -69,6 +78,30 @@ public class Produto {
 
 	public void setLucro(Double lucro) {
 		this.lucro = lucro;
+	}
+
+	public Double getImposto() {
+		return imposto;
+	}
+
+	public void setImposto(Double imposto) {
+		this.imposto = imposto;
+	}
+
+	public Double getTaxaCartao() {
+		return taxaCartao;
+	}
+
+	public void setTaxaCartao(Double taxaCartao) {
+		this.taxaCartao = taxaCartao;
+	}
+
+	public boolean isUsaCartao() {
+		return usaCartao;
+	}
+
+	public void setUsaCartao(boolean usaCartao) {
+		this.usaCartao = usaCartao;
 	}
 
 	public Usuario getUsuario() {
@@ -89,15 +122,20 @@ public class Produto {
 
 	@Override
 	public String toString() {
-		return "Produto [id=" + id + ", nome=" + nome + ", preco=" + preco + ", lucro=" + lucro + ", usuario=" + usuario
+		return "Produto [id=" + id + ", nome=" + nome + ", preco=" + preco + ", imposto=" + imposto + ", taxaCartao="
+				+ taxaCartao + ", lucro=" + lucro + ", usaCartao=" + usaCartao + ", usuario=" + usuario
 				+ ", item=" + item + "]";
 	}
 
-	public Produto(int id, String nome, double preco, Double lucro, Usuario usuario, List<Item> item) {
+	public Produto(int id, String nome, double preco, Double imposto, Double taxaCartao, Double lucro,
+			boolean usaCartao, Usuario usuario, List<Item> item) {
 		this.id = id;
 		this.nome = nome;
 		this.preco = preco;
+		this.imposto = imposto;
+		this.taxaCartao = taxaCartao;
 		this.lucro = lucro;
+		this.usaCartao = usaCartao;
 		this.usuario = usuario;
 		this.item = item;
 	}
