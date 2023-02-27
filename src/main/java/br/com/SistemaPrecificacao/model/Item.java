@@ -18,7 +18,8 @@ public class Item {
 	@GeneratedValue(generator="sequence",strategy=GenerationType.SEQUENCE) 
 	private int id;
 	
-	private NomePreco nomePreco;
+	private String nome;
+	private double preco;
 	
 	@ManyToOne
 	@JoinColumn(name="itemProduto")
@@ -33,12 +34,20 @@ public class Item {
 		this.id = id;
 	}
 
-	public NomePreco getNomePreco() {
-		return nomePreco;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setNomePreco(NomePreco nomePreco) {
-		this.nomePreco = nomePreco;
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(double preco) {
+		this.preco = preco;
 	}
 
 	public Produto getProduto() {
@@ -51,12 +60,13 @@ public class Item {
 
 	@Override
 	public String toString() {
-		return "Item [id=" + id + ", nomePreco=" + nomePreco + ", produto=" + produto + "]";
+		return "Item [id=" + id + ", nome=" + nome + ", preco=" + preco + ", produto=" + produto + "]";
 	}
 
-	public Item(int id, NomePreco nomePreco, Produto produto) {
+	public Item(int id, String nome, double preco, Produto produto) {
 		this.id = id;
-		this.nomePreco = nomePreco;
+		this.nome = nome;
+		this.preco = preco;
 		this.produto = produto;
 	}
 

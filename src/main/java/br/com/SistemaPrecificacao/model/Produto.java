@@ -1,5 +1,7 @@
 package br.com.SistemaPrecificacao.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,7 +21,8 @@ public class Produto {
 	@GeneratedValue(generator="sequence",strategy=GenerationType.SEQUENCE) 
 	private int id;
 	
-	private NomePreco nomePreco;
+	private String nome;
+	private double preco;
 	private Double lucro;
 	
 	@ManyToOne
@@ -28,7 +31,7 @@ public class Produto {
 	private Usuario usuario;
 	
 	@OneToMany(mappedBy = "produtos")
-	private Item item;
+	private List<Item> item;
 
 	public int getId() {
 		return id;
@@ -38,12 +41,20 @@ public class Produto {
 		this.id = id;
 	}
 
-	public NomePreco getNomePreco() {
-		return nomePreco;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setNomePreco(NomePreco nomePreco) {
-		this.nomePreco = nomePreco;
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(double preco) {
+		this.preco = preco;
 	}
 
 	public Double getLucro() {
@@ -62,23 +73,24 @@ public class Produto {
 		this.usuario = usuario;
 	}
 
-	public Item getItem() {
+	public List<Item> getItem() {
 		return item;
 	}
 
-	public void setItem(Item item) {
+	public void setItem(List<Item> item) {
 		this.item = item;
 	}
 
 	@Override
 	public String toString() {
-		return "Produto [id=" + id + ", nomePreco=" + nomePreco + ", lucro=" + lucro + ", usuario=" + usuario
+		return "Produto [id=" + id + ", nome=" + nome + ", preco=" + preco + ", lucro=" + lucro + ", usuario=" + usuario
 				+ ", item=" + item + "]";
 	}
 
-	public Produto(int id, NomePreco nomePreco, Double lucro, Usuario usuario, Item item) {
+	public Produto(int id, String nome, double preco, Double lucro, Usuario usuario, List<Item> item) {
 		this.id = id;
-		this.nomePreco = nomePreco;
+		this.nome = nome;
+		this.preco = preco;
 		this.lucro = lucro;
 		this.usuario = usuario;
 		this.item = item;
@@ -88,8 +100,12 @@ public class Produto {
 		super();
 	}
 	
-	
-//	public double valor() {
-//		
-//	}	
+	public double precoTotal() {
+		double soma = item.stream()
+							.mapToDouble(x -> x.getPreco())
+							.sum();
+		double valor = soma * (lucro / 100);
+		
+		return valor;
+	}	
 }
