@@ -50,6 +50,12 @@ public class Produto {
 	}
 
 	public double getPreco() {
+		double soma = item.stream()
+				.mapToDouble(x -> x.getPreco())
+				.sum();
+
+		double preco = soma * ((lucro / 100) + 1);
+
 		return preco;
 	}
 
@@ -98,14 +104,5 @@ public class Produto {
 
 	public Produto() {
 		super();
-	}
-	
-	public double precoTotal() {
-		double soma = item.stream()
-							.mapToDouble(x -> x.getPreco())
-							.sum();
-		double valor = soma * (lucro / 100);
-		
-		return valor;
 	}	
 }
