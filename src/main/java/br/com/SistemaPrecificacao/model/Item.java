@@ -19,6 +19,7 @@ public class Item {
 	private int id;
 	
 	private String nome;
+	private int quantidade;
 	private double preco;
 	
 	@ManyToOne
@@ -42,6 +43,14 @@ public class Item {
 		this.nome = nome;
 	}
 
+	public int getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(int quantidade) {
+		this.quantidade = quantidade;
+	}
+
 	public double getPreco() {
 		return preco;
 	}
@@ -60,14 +69,21 @@ public class Item {
 
 	@Override
 	public String toString() {
-		return "Item [id=" + id + ", nome=" + nome + ", preco=" + preco + ", produto=" + produto + "]";
+		return "Item [id=" + id + ", nome=" + nome + ", quantidade=" + quantidade + ", preco=" + preco + ", produto="
+				+ produto + "]";
 	}
 
-	public Item(int id, String nome, double preco, Produto produto) {
+	public Item(int id, String nome, int quantidade, double preco, Produto produto) {
+		super();
 		this.id = id;
 		this.nome = nome;
+		this.quantidade = quantidade;
 		this.preco = preco;
 		this.produto = produto;
+	}
+	
+	public double getValorItem() {
+		return quantidade * preco;
 	}
 
 	public Item() {

@@ -27,7 +27,6 @@ public class Produto {
 	private Double imposto;
 	private Double taxaCartao;
 	private Double lucro;
-	private boolean usaCartao;
 	
 	@ManyToOne
 	@JoinColumn(name="produtoUsuario")
@@ -54,18 +53,7 @@ public class Produto {
 	}
 
 	public double getPreco() {
-		double soma = item.stream()
-				.mapToDouble(x -> x.getPreco())
-				.sum();
-
-		double preco = soma * ((lucro / 100) + 1) + imposto;
-		
-		if(!usaCartao == true) {
-			double novoPreco = preco * ((taxaCartao / 100) + 1);
-			return novoPreco;
-		}else {
-			return preco;
-		}
+		return preco;	
 	}
 
 	public void setPreco(double preco) {
@@ -96,14 +84,6 @@ public class Produto {
 		this.taxaCartao = taxaCartao;
 	}
 
-	public boolean isUsaCartao() {
-		return usaCartao;
-	}
-
-	public void setUsaCartao(boolean usaCartao) {
-		this.usaCartao = usaCartao;
-	}
-
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -123,21 +103,42 @@ public class Produto {
 	@Override
 	public String toString() {
 		return "Produto [id=" + id + ", nome=" + nome + ", preco=" + preco + ", imposto=" + imposto + ", taxaCartao="
-				+ taxaCartao + ", lucro=" + lucro + ", usaCartao=" + usaCartao + ", usuario=" + usuario
-				+ ", item=" + item + "]";
+				+ taxaCartao + ", lucro=" + lucro + ", usuario=" + usuario + ", item=" + item + "]";
 	}
 
-	public Produto(int id, String nome, double preco, Double imposto, Double taxaCartao, Double lucro,
-			boolean usaCartao, Usuario usuario, List<Item> item) {
+	public Produto(int id, String nome, double preco, Double imposto, Double taxaCartao,
+			Double lucro, Usuario usuario, List<Item> item) {
 		this.id = id;
 		this.nome = nome;
 		this.preco = preco;
 		this.imposto = imposto;
 		this.taxaCartao = taxaCartao;
 		this.lucro = lucro;
-		this.usaCartao = usaCartao;
 		this.usuario = usuario;
 		this.item = item;
+	}
+	
+	public double getUsaCartao() {
+		
+		double soma = item.stream()
+				.mapToDouble(x -> x.getValorItem())
+				.sum();
+
+		double preco = soma * ((lucro / 100) + 1) + imposto;
+		double novoPreco = preco * ((taxaCartao / 100) + 1);
+		
+		return novoPreco;
+	}
+	
+	public double getSemCartao() {
+		
+		double soma = item.stream()
+				.mapToDouble(x -> x.getValorItem())
+				.sum();
+
+		double preco = soma * ((lucro / 100) + 1) + imposto;
+		
+		return preco;
 	}
 
 	public Produto() {
