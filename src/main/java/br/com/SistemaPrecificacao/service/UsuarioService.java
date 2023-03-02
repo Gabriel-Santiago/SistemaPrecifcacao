@@ -49,4 +49,8 @@ public class UsuarioService {
 		entity.setId(id);
 		usuarioRepository.save(entity);				
 	}
+	
+	public Usuario findByEmail(String str) {
+		return usuarioRepository.findByEmail(str);
+	}
 }

@@ -7,4 +7,7 @@ import br.com.SistemaPrecificacao.model.Usuario;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{	
+	
+	Usuario findByEmail(String email);
+	
 }
