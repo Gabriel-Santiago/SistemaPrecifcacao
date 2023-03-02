@@ -57,11 +57,6 @@ public class ProdutoService {
 		produtoRepository.save(entity);				
 	}
 	
-	public List<Produto> findByItemId(int item_id) {
-		List<Produto> produtos = produtoRepository.findByItemId(item_id);
-		return produtos;
-	}
-	
 	public Produto findByNome(String str) {
 		return produtoRepository.findByNome(str);
 	}
