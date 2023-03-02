@@ -1,5 +1,7 @@
 package br.com.SistemaPrecificacao.service;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.SistemaPrecificacao.model.Item;
+import br.com.SistemaPrecificacao.model.Produto;
 import br.com.SistemaPrecificacao.repository.ItemRepository;
+import br.com.SistemaPrecificacao.repository.ProdutoRepository;
 
 @Service
 public class ItemService {
@@ -15,11 +19,17 @@ public class ItemService {
 	@Autowired
 	ItemRepository itemRepository;
 	
-	public void save(int id, Item entity) {
-		if(id != 0) {
-			entity.setId(id);
-		}
-		itemRepository.save(entity);
+	@Autowired
+	ProdutoRepository produtoRepository;
+	
+	public String save(int produto_id, Item entity) throws ParseException, IOException{
+		Produto produto = produtoRepository.findById(produto_id).get();
+		entity.setProduto(produto);
+		
+		entity = itemRepository.save(entity);
+		itemRepository.flush();
+		
+		return Integer.toString(entity.getId());
 	}
 	
 	public Item find(int id) {

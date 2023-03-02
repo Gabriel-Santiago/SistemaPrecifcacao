@@ -1,14 +1,17 @@
 package br.com.SistemaPrecificacao.service;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.SistemaPrecificacao.model.Item;
 import br.com.SistemaPrecificacao.model.Produto;
+import br.com.SistemaPrecificacao.model.Usuario;
 import br.com.SistemaPrecificacao.repository.ProdutoRepository;
+import br.com.SistemaPrecificacao.repository.UsuarioRepository;
 
 @Service
 public class ProdutoService {
@@ -16,11 +19,16 @@ public class ProdutoService {
 	@Autowired
 	ProdutoRepository produtoRepository;
 	
-	public void save(int id, Produto entity) {
-		if(id != 0) {
-			entity.setId(id);
-		}
-		produtoRepository.save(entity);
+	@Autowired
+	UsuarioRepository usuarioRepository;
+	
+	public String save(int usuario_id, Produto entity) throws ParseException, IOException{
+		Usuario usuario = usuarioRepository.findById(usuario_id).get();
+		entity.setUsuario(usuario);
+		
+		entity = produtoRepository.save(entity);
+		produtoRepository.flush();
+		return Integer.toString(entity.getId());
 	}
 	
 	public Produto find(int id) {
@@ -49,8 +57,9 @@ public class ProdutoService {
 		produtoRepository.save(entity);				
 	}
 	
-	public Produto findByItem(Item item) {
-		return produtoRepository.findByItem(item);
+	public List<Produto> findByItemId(int item_id) {
+		List<Produto> produtos = produtoRepository.findByItemId(item_id);
+		return produtos;
 	}
 	
 	public Produto findByNome(String str) {

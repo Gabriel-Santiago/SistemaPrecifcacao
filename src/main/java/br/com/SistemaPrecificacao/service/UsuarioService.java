@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import br.com.SistemaPrecificacao.model.Produto;
 import br.com.SistemaPrecificacao.model.Usuario;
 import br.com.SistemaPrecificacao.repository.UsuarioRepository;
 
@@ -49,9 +48,5 @@ public class UsuarioService {
 	public void update(int id, Usuario entity) {	
 		entity.setId(id);
 		usuarioRepository.save(entity);				
-	}
-	
-	public Usuario findByProduto(Produto produto) {
-		return usuarioRepository.findByProduto(produto);
 	}
 }
